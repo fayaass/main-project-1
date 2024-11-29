@@ -14,7 +14,7 @@ from django.contrib import messages
 
 
 def shp_login(req):
-    if 'eshop' in req.session:
+    if 'watch' in req.session:
         return redirect(shp_home)
     if 'user' in req.session:
         return redirect(user_home)
@@ -25,7 +25,7 @@ def shp_login(req):
         if data:
             if data.is_superuser:
                 login(req,data)
-                req.session['eshop']=uname   #create session
+                req.session['watch']=uname   #create session
                 return redirect(shp_home)
             else:
                 login(req,data)
@@ -39,7 +39,7 @@ def shp_login(req):
         return render(req,'login.html')
 
 def shp_home(req):
-    if 'eshop' in req.session:
+    if 'watch' in req.session:
         data=Product.objects.all()
         return render(req,'shop/home.html',{'data':data})
     else:
@@ -51,7 +51,7 @@ def shp_logout(req):
     return redirect(shp_login)
 
 def add_prod(req):
-    if 'eshop' in req.session:
+    if 'watch' in req.session:
         if req.method=='POST':
             prd_id=req.POST['prd_id']
             prd_name=req.POST['prd_name']
@@ -63,12 +63,12 @@ def add_prod(req):
             data.save()
             return redirect(add_prod)
         else:
-            return render(req,'shop/add_prod.html')
+            return render(req,'shop/add_pro.html')
     else:
         return redirect(shp_login)
     
 def edit_prod(req,pid):
-    if 'eshop' in req.session:
+    if 'watch' in req.session:
         if req.method=='POST':
             prd_id=req.POST['prd_id']
             prd_name=req.POST['prd_name']
@@ -108,7 +108,7 @@ def register(req):
         name=req.POST['name']
         email=req.POST['email']
         password=req.POST['password']
-        # send_mail('user registration','eshop account created', settings.EMAIL_HOST_USER, [email])
+        # send_mail('user registration','watch account created', settings.EMAIL_HOST_USER, [email])
         try:
            
             data=User.objects.create_user(first_name=name,email=email,password=password,username=email)
