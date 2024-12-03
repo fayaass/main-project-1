@@ -11,13 +11,13 @@ class Product(models.Model):
     img=models.FileField()
     dis=models.TextField()
 
-# class Cart(models.Model):
-#     user=models.ForeignKey(User,on_delete=models.CASCADE)
-#     product=models.ForeignKey(Product,on_delete=models.CASCADE)
+class Cart(models.Model):
+    user=models.ForeignKey(User,on_delete=models.CASCADE)
+    product=models.ForeignKey(Product,on_delete=models.CASCADE)
 
-# class Buy(models.Model):
-#     user=models.ForeignKey(User,on_delete=models.CASCADE)
-#     product=models.ForeignKey(Product,on_delete=models.CASCADE)
-#     price=models.IntegerField()
-#     data=models.DateField(auto_now_add=True)
-# Create your models here.
+class Buy(models.Model):
+    user=models.ForeignKey(User,on_delete=models.CASCADE)
+    product=models.ForeignKey(Product,on_delete=models.CASCADE)
+    price=models.IntegerField()
+    data=models.DateField(auto_now_add=True)
+
