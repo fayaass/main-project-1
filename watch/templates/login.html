@@ -23,39 +23,53 @@
             margin: auto;
         }
         .bi{
-            background-image: url(../static/watch.png);
+            background-image: url(../static/log.webp);
+            text-align: center;
             background-size: 100%;
             background-attachment: fixed;
             
+        }
+        #ps1{
+            padding-top: 25px;
+
+        }
+        .new{
+                text-align: center;
+                padding-top: 25px;
+        }
+        #reg{
+            margin-left: 30px;
+        }
+        #log{
+            color: white;
+            font-weight: bolder;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
         }
     </style>
 </head>
 <body class="bi">
     <form action="" method="post">
-        <h4>LOGIN</h4>
+        <h1 style="text-align: center;" id="log">LOGIN</h1><br><br>
         {% csrf_token %}
-        <table>
-            <tr>
-                <th>Username</th>
-                <td><input type="text" name="uname" placeholder="Username"></td>
-            </tr>
-            <tr>
-                <th>Password</th>
-                <td><input type="password" name="pswd" placeholder="Password"></td>
-            </tr>
-            <tr>
-                <td colspan="2" style="text-align: center;"> <input type="submit" value="Submit" class="btn btn-warning"></td>
-            </tr>
-        </table>
-        <a href="register">REGISTER</a>
+        <div class="new">
+            <label for="uname"></label><br>
+            <input type="text" name="uname" placeholder="Username" class="input"><br><br>
+            <label for="passwd"></label><br>
+            <input type="password" name="pswd" placeholder="Password" class="input"><br><br>
+            <input type="submit" value="LOGIN" class="btn btn-dark">
+            <a href="register" class="btn btn-dark" id="reg">REGISTER</a>
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert  alert-dismissible">
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+        </div>
     </form>
-    {% if messages %}
-    {% for message in messages %}
-    <div class="alert alert-warning alert-dismissible">
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        {{ message }}
-    </div>
-    {% endfor %}
-    {% endif %}
 </body>
 </html>
+
+
+
