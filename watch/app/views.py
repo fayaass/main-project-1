@@ -37,6 +37,9 @@ def shp_login(req):
     
     else:
         return render(req,'login.html')
+    
+
+
 
 def shp_home(req):
     if 'watch' in req.session:
@@ -49,6 +52,13 @@ def shp_logout(req):
     req.session.flush()          #delete session
     logout(req)
     return redirect(shp_login)
+
+
+
+
+
+
+
 
 def add_prod(req):
     if 'watch' in req.session:
