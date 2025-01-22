@@ -1,8 +1,3 @@
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,17 +25,29 @@
         .btn {
             background-color: orangered;
             border-radius: 3px;
+            background-color: orange;
+            border-radius: 5px;
             color: white;
             font-weight: 700;
+            padding: 10px 20px;
+            transition: all 0.3s ease-in-out;
         }
         .bt {
             margin-left: 25%;
             margin-top: 10px;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
         }
         .btn:hover {
             color: orangered;
+            color: orange;
             background-color: white;
             border: 1px solid orangered;
+            border: 2px solid orange;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transform: scale(1.05);
         }
         .specifications, .reviews, .related-products {
             margin-top: 30px;
@@ -71,6 +78,7 @@
         .price h3 {
             font-size: 1.8rem;
             color: orangered;
+            color: green;
         }
         .product-description {
             font-size: 1rem;
@@ -108,14 +116,13 @@
                 <p class="product-description">{{data.dis}}</p>
             </div>
         </div>
-
         
-
      
     <!-- Footer Section -->
     <footer>
-        <p>&copy; 2024 Your Company. All rights are  reserved.</p>
+        <p>&copy; 2024 Your Company. All rights reserved.</p>
        
     </footer>
+    </div>
 </body>
 </html>
