@@ -79,6 +79,9 @@
             color: #333;
             margin-top: 15px;
         }
+        .alert {
+            display: none; /* Hide the alert initially */
+        }
     </style>
 </head>
 <body>
@@ -91,13 +94,20 @@
     </header>
 
     <div class="container">
+        <!-- Alert Section -->
+        <div id="orderAlert" class="alert alert-success alert-dismissible fade show" role="alert">
+            Your order has been placed successfully!
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
         <!-- Product Overview Section -->
         <div class="row">
             <div class="col-lg-5">
                 <img src="{{data.img.url}}" alt="Product Image" style="width: 100%; height: 500px; object-fit: contain; display: block; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
                 <div class="bt">
-                    <a class="btn" href="../add_to_cart/{{data.pk}}">ADD TO CART</a>
-                    <a class="btn" href="../user_buy1/{{data.pk}}">BUY NOW</a>
+                    <!-- Links for Add to Cart and Buy Now, but we use onclick to prevent navigation -->
+                    <button class="btn" onclick="showAlert(event, '../add_to_cart/{{data.pk}}')">ADD TO CART</button>
+                    <button class="btn" onclick="showAlert(event, '../user_buy1/{{data.pk}}')">BUY NOW</button>
                 </div>
             </div>
             <div class="col-lg-7">
@@ -110,5 +120,32 @@
             </div>
         </div>
     </div>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2025 Your Company. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Function to show the success alert for 5 seconds and prevent navigation
+        function showAlert(event, url) {
+            event.preventDefault(); // Prevent the link's default behavior (no page navigation)
+
+            // Show the alert
+            var alert = document.getElementById("orderAlert");
+            alert.style.display = "block"; // Display the alert
+
+            // Hide the alert after 5 seconds (5000 milliseconds)
+            setTimeout(function() {
+                alert.style.display = "none"; // Hide the alert
+            }, 5000);
+
+            // Optional: If you want to navigate after showing the alert, you can do so after a delay:
+            // setTimeout(function() {
+            //     window.location.href = url;
+            // }, 5000); // Uncomment if you want to navigate after 5 seconds
+        }
+    </script>
 </body>
 </html>
+
