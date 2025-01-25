@@ -185,7 +185,7 @@ def user_buy1(req,pid):
 def user_booking(req):
     user=User.objects.get(username=req.session['user'])
     buy=Buy.objects.filter(user=user)[::-1]
-    return render(req,'user/booking.html',{'buy':buy})
+    return render(req,'user/user_booking.html',{'buy':buy})
 
 
 

@@ -1,4 +1,4 @@
-#!/home/software-9am/Desktop/project/main-project-1/env/bin/python3
+#!/home/software-9am/Desktop/main/main-project-1/env/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys
