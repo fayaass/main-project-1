@@ -28,4 +28,5 @@ urlpatterns=[
     path('booking',views.booking),
     path('user_booking',views.user_booking),
 
+   
 ]
