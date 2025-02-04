@@ -254,13 +254,17 @@
                 <div class="product-details">
                     <p class="product-name">{{i.product.name}}</p>
                     <p class="product-price">${{i.price}}</p>
-                    <p class="product-date">Purchased on: {{i.date}}</p>
-                    <a href="cancel_booking/{{i.id}}" class="cancel-btn" onclick="return confirm('Are you sure you want to cancel this booking?')">Cancel Booking</a>
+                    <!-- Display the formatted booking date -->
+                    <p class="product-date">Purchased on: {{ i.date|date:"F j, Y" }}</p>
+
+                    <!-- <a href="cancel_booking/{{i.id}}" class="cancel-btn" onclick="return confirm('Are you sure you want to cancel this booking?')">Cancel Booking</a> -->
+                    <a href="cancel_booking/{{i.id}}" class="cancel-btn" >Cancel Booking</a>
                 </div>
             </div>
-            {% endfor %}
+            {% endfor %}    
         </div>
     </div>
 
 </body>
 </html>
+

@@ -76,10 +76,14 @@
                 <div class="product-card">
                     <img src="{{i.product.img.url}}" alt="{{i.product.name}}">
                     <div class="product-details">
-                        <p class="product-name">{{i.product.name}}</p>
+                        <!-- <p class="product-name">{{i.product.name}}</p>
                         <p class="product-price">${{i.price}}</p>
                     
-                        <p class="purchase-date">Purchased on: {{i.date}}</p>
+                        <p class="purchase-date">Purchased on: {{i.date}}</p> -->
+                        <div class="product-name">{{i.product.name}}</div>
+                        <div class="product-price">${{i.price}}</div>
+                        <div class="product-date">Date: {{i.date}}</div>
+                        <div class="product-user">Booked by: {{i.user.first_name}}</div>
                     </div>
                 </div>
             </div>

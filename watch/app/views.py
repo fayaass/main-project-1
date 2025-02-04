@@ -39,7 +39,30 @@ def shp_login(req):
         return render(req,'login.html')
     
 
-
+def shp_login1(req):
+    if 'watch' in req.session:
+        return redirect(shp_home)
+    if 'user' in req.session:
+        return redirect(user_home)
+    if req.method=='POST':
+        uname=req.POST['uname']
+        password=req.POST['pswd']
+        data=authenticate(username=uname,password=password)
+        if data:
+            if data.is_superuser:
+                login(req,data)
+                req.session['watch']=uname   #create session
+                return redirect(shp_home)
+            else:
+                login(req,data)
+                req.session['user']=uname   #create session
+                return redirect(user_home)
+        else:
+            messages.warning(req,'Invalid username or password.')
+            return redirect(shp_login)
+    
+    else:
+        return render(req,'login.html')
 
 def shp_home(req):
     if 'watch' in req.session:
@@ -170,7 +193,7 @@ def user_buy(req,cid):
     buy=Buy.objects.create(user=user,product=product,price=price)
     buy.save()
     #cart.delete()
-    return redirect(view_cart)
+    return redirect(order)
 
 def user_buy1(req,pid):
     user=User.objects.get(username=req.session['user'])
@@ -178,7 +201,7 @@ def user_buy1(req,pid):
     price=product.ofr_price
     buy=Buy.objects.create(user=user,product=product,price=price)
     buy.save()
-    return redirect(user_home)
+    return redirect(order)
 
 
 
@@ -187,6 +210,26 @@ def user_booking(req):
     buy=Buy.objects.filter(user=user)[::-1]
     return render(req,'user/user_booking.html',{'buy':buy})
 
+
+
+
+from django.shortcuts import render, redirect
+from .form import OrderForm
+from .models import Order
+
+def order(request):
+    if request.method == 'POST':
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('order_success')  # Redirect to success page
+    else:
+        form = OrderForm()
+    
+    return render(request, 'user/product_booking.html', {'form': form})
+
+def order_success(request):
+    return render(request, 'user/order.html')
 
 
 
