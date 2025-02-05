@@ -213,6 +213,8 @@ def user_booking(req):
 
 
 
+
+
 from django.shortcuts import render, redirect
 from .form import OrderForm
 from .models import Order
@@ -240,7 +242,18 @@ def order_success(request):
 
 
 
+from django.shortcuts import render, redirect
+from .models import Cart
 
+def view_cart(request):
+    cart_det = Cart.objects.filter(user=request.user)
+    total_cart_price = sum(item.product.ofr_price * item.quantity for item in cart_det)
+
+    return render(request, 'user/view_cart.html', {'cart_det': cart_det, 'total_cart_price': total_cart_price})
+
+def delete_cart(request, pk):
+    Cart.objects.filter(id=pk, user=request.user).delete()
+    return redirect('view_cart')
 
 
 
