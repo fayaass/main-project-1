@@ -92,7 +92,8 @@ def add_prod(req):
             ofr_price=req.POST['ofr_price']
             img=req.FILES['img']
             prd_dis=req.POST['prd_dis']
-            data=Product.objects.create(pro_id=prd_id,name=prd_name,price=prd_price,ofr_price=ofr_price,img=img,dis=prd_dis)
+            quantity = int(req.POST['quantity'])  # Fetch quantity from form
+            data=Product.objects.create(pro_id=prd_id,name=prd_name,price=prd_price,ofr_price=ofr_price,img=img,dis=prd_dis,quantity=quantity)
             data.save()
             return redirect(add_prod)
         else:
@@ -109,13 +110,14 @@ def edit_prod(req,pid):
             ofr_price=req.POST['ofr_price']
             prd_dis=req.POST['prd_dis']
             img=req.FILES.get('img')
+            quantity = req.POST['quantity']  # Retrieve quantity
             if img:
-                Product.objects.filter(pk=pid).update(pro_id=prd_id,name=prd_name,price=prd_price,ofr_price=ofr_price,dis=prd_dis)
+                Product.objects.filter(pk=pid).update(pro_id=prd_id,name=prd_name,price=prd_price,ofr_price=ofr_price,dis=prd_dis,quantity=quantity)
                 data=Product.objects.get(pk=pid)
                 data.img=img
                 data.save()
             else:
-                Product.objects.filter(pk=pid).update(pro_id=prd_id,name=prd_name,price=prd_price,ofr_price=ofr_price,dis=prd_dis)
+                Product.objects.filter(pk=pid).update(pro_id=prd_id,name=prd_name,price=prd_price,ofr_price=ofr_price,dis=prd_dis,quantity=quantity)
             return redirect(shp_home)
         else:
             data=Product.objects.get(pk=pid)
@@ -251,9 +253,9 @@ def view_cart(request):
 
     return render(request, 'user/view_cart.html', {'cart_det': cart_det, 'total_cart_price': total_cart_price})
 
-def delete_cart(request, pk):
-    Cart.objects.filter(id=pk, user=request.user).delete()
-    return redirect('view_cart')
+def delete_cart(request, id):
+    Cart.objects.filter(pk=id, user=request.user).delete()
+    return redirect(view_cart)
 
 
 

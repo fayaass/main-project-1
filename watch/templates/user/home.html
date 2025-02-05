@@ -327,6 +327,11 @@
                                 <p class="card-text">{{product.dis}}</p>
                                 <s><p class="text-muted">₹{{product.price}}</p></s>
                                 <p class="product-card-price">₹{{product.ofr_price}}</p>
+                                {% if product.is_out_of_stock %}
+                                    <p class="stock-message out-of-stock">Out of Stock</p>
+                                {% else %}
+                                    <p class="stock-message in-stock">In Stock: {{ product.quantity }}</p>
+                                {% endif %}
                             </div>
                         </div>
                     </a>

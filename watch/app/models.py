@@ -12,6 +12,8 @@ class Product(models.Model):
     ofr_price=models.IntegerField()
     img=models.FileField()
     dis=models.TextField()
+    quantity = models.PositiveIntegerField(default=0)  # New field for stock quantity
+    
 
 class Cart(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE)

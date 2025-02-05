@@ -453,6 +453,14 @@
                     <s>₹{{data.price}}</s> ₹{{data.ofr_price}}
                 </div>
                 <p>{{data.dis}}</p>
+
+
+                {% if data.is_out_of_stock %}
+                    <p class="out-of-stock">Out of Stock</p>
+                {% else %}
+                    <p class="in-stock">In Stock: {{ data.quantity }}</p>
+                {% endif %}
+
                 <div>
                     <a href="../add_to_cart/{{data.pk}}" class="btn">Add to Cart</a>
                     <a href="../user_buy1/{{data.pk}}" class="btn">Buy Now</a>

@@ -157,6 +157,9 @@
             <div class="d-grid">
                 <button type="submit" class="btn btn-primary">Register</button>
             </div>
+            <div class="register-link">
+                <a href="{% url 'shp_login1' %}">Already have an account? Login</a>
+            </div>
             {% if messages %}
             {% for message in messages %}
             <div class="alert alert-warning alert-dismissible fade show mt-3" role="alert">
@@ -166,7 +169,7 @@
             {% endfor %}
             {% endif %}
         </form>
-        <a href="login" class="login-link">Already have an account? Login here</a>
+        {% comment %} <a href="login" class="login-link">Already have an account? Login here</a> {% endcomment %}
     </div>
 </body>
 </html>
