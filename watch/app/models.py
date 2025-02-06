@@ -43,11 +43,7 @@ class Order(models.Model):
 
 
 
-class Booking(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    order = models.ForeignKey(Order, on_delete=models.CASCADE)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
+
 
 
 

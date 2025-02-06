@@ -205,6 +205,7 @@ def user_buy1(req,pid):
     buy.save()
     return redirect(order)
 
+    
 
 
 def user_booking(req):
@@ -264,4 +265,15 @@ def delete_cart(request, id):
 
 
 
+from django.shortcuts import redirect, get_object_or_404
+from django.contrib import messages
+from .models import Buy  # Import your Buy model
 
+def cancel_buy(request, buy_id):
+    buy = get_object_or_404(Buy, id=buy_id)
+    
+    # Perform cancellation logic (e.g., delete or update status)
+    buy.delete()  # Or buy.status = "Cancelled" and buy.save()
+    
+    messages.success(request, "Your purchase has been canceled successfully.")
+    return redirect(user_booking)  # Redirect to the buy list page
