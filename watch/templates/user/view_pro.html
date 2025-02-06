@@ -408,6 +408,9 @@
             color: #E67E22;
             text-decoration: none;
         }
+        .alert {
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -438,22 +441,26 @@
         </div>
     </nav>
 
-    <!-- Back Button -->
-    <!-- <a href="/" class="back-btn">Back to Home</a> -->
-
     <!-- Product Page Content -->
     <div class="container">
+        {% if messages %}
+            <div class="alert alert-danger" role="alert">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+        
         <div class="product-main">
             <div class="product-image">
-                <img src="{{data.img.url}}" alt="Luxury Watch">
+                <img src="{{ data.img.url }}" alt="Luxury Watch">
             </div>
             <div class="product-details">
-                <h2>{{data.name}}</h2>
+                <h2>{{ data.name }}</h2>
                 <div class="price">
-                    <s>₹{{data.price}}</s> ₹{{data.ofr_price}}
+                    <s>₹{{ data.price }}</s> ₹{{ data.ofr_price }}
                 </div>
-                <p>{{data.dis}}</p>
-
+                <p>{{ data.dis }}</p>
 
                 {% if data.is_out_of_stock %}
                     <p class="out-of-stock">Out of Stock</p>
@@ -462,8 +469,10 @@
                 {% endif %}
 
                 <div>
-                    <a href="../add_to_cart/{{data.pk}}" class="btn">Add to Cart</a>
-                    <a href="../user_buy1/{{data.pk}}" class="btn">Buy Now</a>
+                    <a href="../add_to_cart/{{ data.pk }}" class="btn">Add to Cart</a>
+                
+
+                    <a href="../user_buy1/{{ data.pk }}" class="btn">Buy Now</a>
                 </div>
             </div>
         </div>
@@ -501,6 +510,7 @@
 
 </body>
 </html>
+
 
 
 

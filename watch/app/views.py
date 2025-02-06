@@ -177,6 +177,14 @@ def add_to_cart(req,pid):
     data.save()
     return redirect(view_cart)
 
+
+
+
+
+
+
+
+
 def view_cart(req):
     user=User.objects.get(username=req.session['user'])
     cart_det=Cart.objects.filter(user=user)
@@ -197,13 +205,51 @@ def user_buy(req,cid):
     #cart.delete()
     return redirect(order)
 
-def user_buy1(req,pid):
-    user=User.objects.get(username=req.session['user'])
-    product=Product.objects.get(pk=pid) 
-    price=product.ofr_price
-    buy=Buy.objects.create(user=user,product=product,price=price)
+# def user_buy1(req,pid):
+#     user=User.objects.get(username=req.session['user'])
+#     product=Product.objects.get(pk=pid) 
+#     price=product.ofr_price
+#     buy=Buy.objects.create(user=user,product=product,price=price)
+#     buy.save()
+#     return redirect(order)
+
+
+
+
+from django.contrib import messages
+from django.shortcuts import redirect
+from .models import Product, User, Buy
+
+def user_buy1(req, pid):
+    user = User.objects.get(username=req.session['user'])
+    product = Product.objects.get(pk=pid)
+    
+    # Check if the product is out of stock (quantity is zero)
+    if product.quantity == 0:
+        # If product is out of stock, show an alert message
+        messages.error(req, 'Sorry, this product is currently out of stock and cannot be purchased.')
+        return redirect('view_product', pid=pid)  # Redirect back to the product page with the alert
+    
+    # Continue with the purchase process if the product is in stock
+    price = product.ofr_price
+    buy = Buy.objects.create(user=user, product=product, price=price)
     buy.save()
-    return redirect(order)
+    
+    # Optionally, you can reduce the stock quantity here if needed
+    product.quantity -= 1
+    product.save()
+    
+    # Redirect to an order confirmation or view
+    return redirect('order')
+
+
+
+
+
+
+
+
+
 
     
 
@@ -277,3 +323,20 @@ def cancel_buy(request, buy_id):
     
     messages.success(request, "Your purchase has been canceled successfully.")
     return redirect(user_booking)  # Redirect to the buy list page
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
