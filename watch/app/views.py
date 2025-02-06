@@ -308,24 +308,60 @@ def order_success(request):
 
 
 
+# from django.shortcuts import render, redirect
+# from .models import Cart
+
+# def view_cart(request):
+#     cart_det = Cart.objects.filter(user=request.user)
+#     total_cart_price = sum(item.product.ofr_price * item.quantity for item in cart_det)
+
+#     # Check if the product stock is available for each item
+#     for item in cart_det:
+#         item.is_out_of_stock = item.product.quantity == 0
+
+#     return render(request, 'user/view_cart.html', {'cart_det': cart_det, 'total_cart_price': total_cart_price})
+
+# def delete_cart(request, id):
+#     Cart.objects.filter(pk=id, user=request.user).delete()
+#     return redirect(view_cart)
+
+
 from django.shortcuts import render, redirect
-from .models import Cart
+from .models import Cart, Product
 
 def view_cart(request):
-    cart_det = Cart.objects.filter(user=request.user)
-    total_cart_price = sum(item.product.ofr_price * item.quantity for item in cart_det)
+    cart_items = Cart.objects.filter(user=request.user)
+    total_cart_price = sum(item.total_price for item in cart_items)
 
-    # Check if the product stock is available for each item
-    for item in cart_det:
+    # Check if any product in the cart is out of stock
+    for item in cart_items:
         item.is_out_of_stock = item.product.quantity == 0
 
-    return render(request, 'user/view_cart.html', {'cart_det': cart_det, 'total_cart_price': total_cart_price})
+    return render(request, 'user/view_cart.html', {
+        'cart_items': cart_items,
+        'total_cart_price': total_cart_price
+    })
+
+def update_cart_quantity(request, id, quantity):
+    try:
+        cart_item = Cart.objects.get(id=id, user=request.user)
+        product = cart_item.product
+
+        # Update quantity if it's valid and within the available stock
+        if 0 < quantity <= product.quantity:
+            cart_item.quantity = quantity
+            cart_item.save()
+
+        return redirect('view_cart')
+    except Cart.DoesNotExist:
+        return redirect('view_cart')
 
 def delete_cart(request, id):
-    Cart.objects.filter(pk=id, user=request.user).delete()
-    return redirect(view_cart)
-
-
+    try:
+        Cart.objects.get(id=id, user=request.user).delete()
+    except Cart.DoesNotExist:
+        pass
+    return redirect('view_cart')
 
 
 
