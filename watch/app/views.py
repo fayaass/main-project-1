@@ -185,15 +185,15 @@ def add_to_cart(req,pid):
 
 
 
-def view_cart(req):
-    user=User.objects.get(username=req.session['user'])
-    cart_det=Cart.objects.filter(user=user)
-    return render(req,'user/view_cart.html',{'cart_det':cart_det})
+# def view_cart(req):
+#     user=User.objects.get(username=req.session['user'])
+#     cart_det=Cart.objects.filter(user=user)
+#     return render(req,'user/view_cart.html',{'cart_det':cart_det})
 
-def delete_cart(req,id):
-    cart=Cart.objects.get(pk=id)
-    cart.delete()
-    return redirect(view_cart) 
+# def delete_cart(req,id):
+#     cart=Cart.objects.get(pk=id)
+#     cart.delete()
+#     return redirect(view_cart) 
 
 def user_buy(req,cid):
     user=User.objects.get(username=req.session['user'])
@@ -291,6 +291,23 @@ def order_success(request):
 
 
 
+# from django.shortcuts import render, redirect
+# from .models import Cart
+
+# def view_cart(request):
+#     cart_det = Cart.objects.filter(user=request.user)
+#     total_cart_price = sum(item.product.ofr_price * item.quantity for item in cart_det)
+
+#     return render(request, 'user/view_cart.html', {'cart_det': cart_det, 'total_cart_price': total_cart_price})
+
+# def delete_cart(request, id):
+#     Cart.objects.filter(pk=id, user=request.user).delete()
+#     return redirect(view_cart)
+
+
+
+
+
 from django.shortcuts import render, redirect
 from .models import Cart
 
@@ -298,11 +315,25 @@ def view_cart(request):
     cart_det = Cart.objects.filter(user=request.user)
     total_cart_price = sum(item.product.ofr_price * item.quantity for item in cart_det)
 
+    # Check if the product stock is available for each item
+    for item in cart_det:
+        item.is_out_of_stock = item.product.quantity == 0
+
     return render(request, 'user/view_cart.html', {'cart_det': cart_det, 'total_cart_price': total_cart_price})
 
 def delete_cart(request, id):
     Cart.objects.filter(pk=id, user=request.user).delete()
     return redirect(view_cart)
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -389,6 +389,21 @@
             background-color: #D35400;
             transform: scale(1.05);
         }
+        .out-of-stock-btn {
+            background-color: grey;
+            cursor: not-allowed;
+        }
+        .out-of-stock-btn:hover {
+            background-color: grey;
+        }
+        .out-of-stock {
+            color: red;
+            font-weight: bold;
+        }
+        .in-stock{
+            color: green;
+            font-weight: bold;
+        }
         .tabs-section {
             margin-top: 50px;
         }
@@ -411,6 +426,7 @@
         .alert {
             margin-top: 20px;
         }
+        
     </style>
 </head>
 <body>
@@ -462,17 +478,23 @@
                 </div>
                 <p>{{ data.dis }}</p>
 
-                {% if data.is_out_of_stock %}
+                {% if data.quantity == 0 %}
                     <p class="out-of-stock">Out of Stock</p>
                 {% else %}
                     <p class="in-stock">In Stock: {{ data.quantity }}</p>
                 {% endif %}
 
                 <div>
+                    <!-- Add to Cart button (remains constant) -->
                     <a href="../add_to_cart/{{ data.pk }}" class="btn">Add to Cart</a>
-                
 
-                    <a href="../user_buy1/{{ data.pk }}" class="btn">Buy Now</a>
+                    {% if data.quantity == 0 %}
+                        <!-- Disabled "Buy Now" button when out of stock -->
+                        <a href="#" class="btn out-of-stock-btn">Out of Stock</a>
+                    {% else %}
+                        <!-- Active "Buy Now" button when in stock -->
+                        <a href="../user_buy1/{{ data.pk }}" class="btn">Buy Now</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -510,20 +532,3 @@
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
