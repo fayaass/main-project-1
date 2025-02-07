@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -176,6 +176,194 @@
 
             </div>
         
+    </div>
+</body>
+</html> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Now</title>
+    <style>
+        /* General styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        /* Container for the form */
+        .container {
+            width: 90%;
+            max-width: 450px;
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 1.8em;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 1em;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        label {
+            font-weight: bold;
+            font-size: 0.9em;
+            color: #333;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"], input[type="email"], input[type="tel"], textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            transition: all 0.3s;
+        }
+
+        input:focus, textarea:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+        }
+
+        .error {
+            color: red;
+            font-size: 0.85em;
+            margin-top: 5px;
+        }
+
+        /* Button Styling */
+        button {
+            width: 100%;
+            background-color: #007bff;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background 0.3s ease-in-out;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Back link */
+        .link {
+            margin-top: 15px;
+        }
+
+        .link a {
+            color: #007bff;
+            text-decoration: none;
+            font-size: 1em;
+        }
+
+        .link a:hover {
+            text-decoration: underline;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Place Your Order</h1>
+        <p>Fill in the details below to proceed.</p>
+        
+        <form method="POST" action="{% url 'order' %}">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="id_name">Full Name</label>
+                {{ form.name }}
+                {% if form.name.errors %}
+                    <div class="error">
+                        {% for error in form.name.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label for="id_email">Email Address</label>
+                {{ form.email }}
+                {% if form.email.errors %}
+                    <div class="error">
+                        {% for error in form.email.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label for="id_phone_number">Phone Number</label>
+                {{ form.phone_number }}
+                {% if form.phone_number.errors %}
+                    <div class="error">
+                        {% for error in form.phone_number.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label for="id_shipping_address">Shipping Address</label>
+                {{ form.shipping_address }}
+                {% if form.shipping_address.errors %}
+                    <div class="error">
+                        {% for error in form.shipping_address.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            
+            <button type="submit">Place Order</button>
+        </form>
+
+        <div class="link">
+            <a href="{% url 'user_home' %}">Back to Home</a>
+        </div>
     </div>
 </body>
 </html>
