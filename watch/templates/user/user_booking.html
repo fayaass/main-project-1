@@ -274,13 +274,14 @@
                 <img src="{{ i.product.img.url }}" alt="{{ i.product.name }}">
                 <div class="product-details">
                     <p class="product-name">{{ i.product.name }}</p>
-                    <p class="product-price">${{ i.price }}</p>
+                    <p class="product-price">${{ i.total_price }}</p> <!-- Show total price here -->
                     <p class="product-date">Purchased on: {{ i.date|date:"F j, Y" }}</p>
                     <p class="product-quantity">Quantity: <strong>{{ i.quantity }}</strong></p>
-    
+            
                     <a href="{% url 'cancel_buy' i.id %}" class="cancel-btn">Cancel Purchase</a>
                 </div>
             </div>
+            
             {% endfor %}    
         </div>
     </div><br><br><br><br><br><br><br><br><br><br>

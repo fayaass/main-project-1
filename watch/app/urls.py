@@ -31,6 +31,7 @@ urlpatterns=[
     # path('user_booking',views.user_booking),
     path('order/', views.order, name='order'),
     path('order/success/', views.order_success, name='order_success'),
+    # path('cancel_buy/<int:buy_id>/', views.cancel_buy, name='cancel_buy'),
     path('cancel_buy/<int:buy_id>/', views.cancel_buy, name='cancel_buy'),
 
 
