@@ -195,15 +195,90 @@ def add_to_cart(req,pid):
 #     cart.delete()
 #     return redirect(view_cart) 
 
-def user_buy(req,cid):
-    user=User.objects.get(username=req.session['user'])
-    cart=Cart.objects.get(pk=cid)
-    product=cart.product
-    price=cart.product.ofr_price
-    buy=Buy.objects.create(user=user,product=product,price=price)
+# def user_buy(req,cid):
+#     user=User.objects.get(username=req.session['user'])
+#     cart=Cart.objects.get(pk=cid)
+#     product=cart.product
+#     price=cart.product.ofr_price
+#     buy=Buy.objects.create(user=user,product=product,price=price)
+#     buy.save()
+#     #cart.delete()
+#     return redirect(order)
+
+
+
+
+
+
+
+# from django.shortcuts import render, redirect
+# from .models import User, Cart, Buy
+
+# def user_buy(req, cid):
+#     user = User.objects.get(username=req.session['user'])
+#     cart = Cart.objects.get(pk=cid)
+#     product = cart.product
+#     quantity = cart.quantity  # Get the quantity from the cart
+#     price = cart.product.ofr_price * quantity  # Calculate total price
+
+#     # Save the purchase with the correct quantity
+#     buy = Buy.objects.create(user=user, product=product, price=price, quantity=quantity)
+#     buy.save()
+
+#     return redirect('order')  # Ensure 'order' is a valid URL name
+
+
+
+
+
+# def user_buy(req, cid):
+#     user = User.objects.get(username=req.session['user'])
+#     cart = Cart.objects.get(pk=cid)
+#     product = cart.product
+#     price = cart.product.ofr_price
+#     quantity = cart.quantity  # Get the quantity from the cart
+
+#     buy = Buy.objects.create(user=user, product=product, price=price, quantity=quantity)
+#     buy.save()
+
+#     cart.delete()  # Remove the item from cart after purchasing
+#     return redirect('user/user_booking')
+
+
+
+from django.shortcuts import redirect
+
+def user_buy(req, cid):
+    user = User.objects.get(username=req.session['user'])
+    cart = Cart.objects.get(pk=cid)
+    product = cart.product
+    price = cart.product.ofr_price
+    quantity = cart.quantity  # Get the quantity
+
+    buy = Buy.objects.create(user=user, product=product, price=price, quantity=quantity)
     buy.save()
-    #cart.delete()
-    return redirect(order)
+
+    cart.delete()  # Remove from cart after purchase
+
+    return redirect(order)  # Use absolute URL to avoid incorrect paths
+
+
+
+
+
+def user_booking(req):
+    user = User.objects.get(username=req.session['user'])
+    bookings = Buy.objects.filter(user=user)
+    return render(req, 'user/user_booking.html', {'buy': bookings})
+
+
+# def user_booking(req):
+#     user=User.objects.get(username=req.session['user'])
+#     buy=Buy.objects.filter(user=user)[::-1]
+#     return render(req,'user/user_booking.html',{'buy':buy})
+
+
+
 
 # def user_buy1(req,pid):
 #     user=User.objects.get(username=req.session['user'])
@@ -254,10 +329,10 @@ def user_buy1(req, pid):
     
 
 
-def user_booking(req):
-    user=User.objects.get(username=req.session['user'])
-    buy=Buy.objects.filter(user=user)[::-1]
-    return render(req,'user/user_booking.html',{'buy':buy})
+# def user_booking(req):
+#     user=User.objects.get(username=req.session['user'])
+#     buy=Buy.objects.filter(user=user)[::-1]
+#     return render(req,'user/user_booking.html',{'buy':buy})
 
 
 

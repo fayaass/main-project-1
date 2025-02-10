@@ -25,10 +25,10 @@ urlpatterns=[
     path('add_to_cart/<pid>',views.add_to_cart),
     path('view_cart/',views.view_cart),
     path('delete_cart/<id>',views.delete_cart),
-    path('user_buy/<cid>',views.user_buy),
+    # path('user_buy/<cid>',views.user_buy),
     path('user_buy1/<pid>',views.user_buy1),
     path('booking',views.booking),
-    path('user_booking',views.user_booking),
+    # path('user_booking',views.user_booking),
     path('order/', views.order, name='order'),
     path('order/success/', views.order_success, name='order_success'),
     path('cancel_buy/<int:buy_id>/', views.cancel_buy, name='cancel_buy'),
@@ -41,6 +41,8 @@ urlpatterns=[
     path('cart/update/<int:id>/<int:quantity>/', views.update_cart_quantity, name='update_cart_quantity'),
     path('cart/delete/<int:id>/', views.delete_cart, name='delete_cart_item'),
     
+    path('user_buy/<int:cid>/', views.user_buy, name='user_buy'),
+    path('user_booking/', views.user_booking, name='user_booking'),
 ]
 
 

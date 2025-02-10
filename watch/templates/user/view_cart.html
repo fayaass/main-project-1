@@ -433,7 +433,10 @@
                         {% if item.is_out_of_stock %}
                             <button class="btn-buy1 mt-3" disabled>Out of Stock</button>
                         {% else %}
-                            <button class="btn-buy mt-3" onclick="window.location.href='/user_buy/{{ item.id }}'">Buy</button>
+                            {% comment %} <button class="btn-buy mt-3" onclick="window.location.href='/user_buy/{{ item.id }}'">Buy</button> {% endcomment %}
+                            <!-- Ensure correct quantity is passed -->
+                            <button class="btn-buy mt-3" onclick="window.location.href='/user_buy/{{ item.id }}/'">Buy</button>
+
                         {% endif %}
                     </div>
                 </div>
