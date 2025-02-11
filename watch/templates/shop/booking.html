@@ -8,10 +8,16 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <style>
+        /* Global Styles */
         body {
-            background-color: #f8f9fa;
-            font-family: Arial, sans-serif;
+            background-color: #f4f7fb; /* Light gray background */
+            font-family: 'Arial', sans-serif;
+            color: #555;
+            margin: 0;
+            padding: 0;
         }
+
+        /* Navbar Styles */
         .navbar {
             background-color: #343a40;
         }
@@ -24,62 +30,121 @@
             padding: 10px 20px;
         }
 
-        .product-container {
-            margin-top: 30px;
+        /* Main Content */
+        .content {
+            padding: 40px;
         }
 
-        .product-card {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 20px;
-            background-color: white;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        .d-flex {
             margin-bottom: 20px;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .product-card img {
+        .search-bar {
             width: 100%;
-            height: auto;
+            max-width: 300px;
+            padding: 12px;
+            font-size: 1rem;
             border-radius: 8px;
+            border: 1px solid #bdc3c7;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
         }
 
-        .product-name {
-            font-size: 1.25rem;
-            font-weight: bold;
-            margin-top: 10px;
+        .search-bar:focus {
+            outline: none;
+            border-color: #3498db;
         }
 
-        .product-price {
-            font-size: 1.1rem;
-            color: #28a745;
+        /* Table Styles */
+        .table-container {
+            margin-top: 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .table {
+            width: 100%;
+            margin-bottom: 0;
+        }
+
+        .table th {
+            background-color: #3498db;
+            color: white;
             font-weight: 600;
-            margin-top: 5px;
+            text-align: center;
+            padding: 12px 20px;
         }
 
-        .product-date {
-            font-size: 0.9rem;
-            color: #6c757d;
-            margin-top: 10px;
+        .table td {
+            text-align: center;
+            padding: 12px 20px;
+            font-size: 1rem;
+            color: #333;
         }
 
-        .purchase-date {
-            font-size: 0.95rem;
-            color: #007bff;  /* Blue color for purchase date */
-            font-weight: 500;
-            margin-top: 10px;
+        .table-hover tbody tr:hover {
+            background-color: #f7f9fc;
+            cursor: pointer;
         }
 
-        .col-lg-12 {
-            flex: 0 0 100%;
-            max-width: 100%;
+        .status-badge {
+            padding: 8px 15px;
+            font-weight: 600;
+            color: white;
+            border-radius: 20px;
+            text-transform: capitalize;
         }
 
-        .row {
-            margin-top: 20px;
+        .status-pending {
+            background-color: #f39c12;
+        }
+
+        .status-confirmed {
+            background-color: #27ae60;
+        }
+
+        .status-cancelled {
+            background-color: #e74c3c;
+        }
+
+        .product-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            margin-right: 15px;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .search-bar {
+                max-width: 100%;
+            }
+
+            .table th, .table td {
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Button Styles */
+        .btn-custom {
+            background-color: #3498db;
+            color: #fff;
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-custom:hover {
+            background-color: #2980b9;
         }
     </style>
 </head>
 <body>
+    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">HUBLOT</a>
@@ -104,27 +169,115 @@
             </div>
         </div>
     </nav>
-    <div class="container product-container">
-        <div class="row">
-            {% for i in buy %}
-            <div class="col-md-4 col-lg-4 col-sm-6">
-                <div class="product-card">
-                    <img src="{{i.product.img.url}}" alt="{{i.product.name}}">
-                    <div class="product-details">
-                        <!-- <p class="product-name">{{i.product.name}}</p>
-                        <p class="product-price">${{i.price}}</p>
+    
+
+    <!-- Main Content -->
+    <div class="content">
+        <div class="d-flex">
+            <h2>Bookings</h2>
+            <input type="text" id="search" class="search-bar" placeholder="Search Bookings...">
+        </div>
+
+        <div class="table-container">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Product</th>
+                        <th>Offer Price</th>
+                        <th>Date</th>
+                        <th>Customer</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Address</th>
+                        <th>Quantity</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="bookingTable">
+                    {% for buy, order in combined_data %}
+                    <tr>
+                        <td><img src="{{ buy.product.img.url }}" alt="{{ buy.product.name }}" class="product-img"></td>
+                        <td>{{ buy.product.name }}</td>
+                        <td>₹{{ buy.price }}</td>
+                        <td>{{ buy.date }}</td>
+                        <td>{{ order.name }}</td>
+                        <td>{{ order.email }}</td>
+                        <td>{{ order.phone_number }}</td>
+                        <td>{{ order.shipping_address }}</td>
+                        <td>{{ buy.Quantity }}</td>
+                        <td>
+                            <span class="status-badge 
+                                {% if order.status == 'Pending' %}status-pending
+                                {% elif order.status == 'Confirmed' %}status-confirmed
+                                {% elif order.status == 'Cancelled' %}status-cancelled
+                                {% endif %}">
+                                {{ order.status }}
+                            </span>
+                        </td>
+                         <!-- Modal for Detailed View -->
+                        <div class="modal fade" id="bookingModal{{ order.id }}" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="bookingModalLabel">{{ buy.product.name }} - Details</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p><strong>Customer Name:</strong> {{ order.name }}</p>
+                                        <p><strong>Email:</strong> {{ order.email }}</p>
+                                        <p><strong>Phone:</strong> {{ order.phone_number }}</p>
+                                        <p><strong>Address:</strong> {{ order.shipping_address }}</p>
+                                        <p><strong>Status:</strong> {{ order.status }}</p>
+                                        <p><strong>Price:</strong> ₹{{ buy.price }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <td>
+                            <!-- Delete Button -->
+                            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ order.id }}">Delete</button>
+                        </td>
+                    </tr>
                     
-                        <p class="purchase-date">Purchased on: {{i.date}}</p> -->
-                        <div class="product-name">{{i.product.name}}</div>
-                        <div class="product-price">${{i.price}}</div>
-                        <div class="product-date">Date: {{i.date}}</div>
-                        <div class="product-user">Booked by: {{i.user.first_name}}</div>
+                    <!-- Modal for Deletion Confirmation -->
+                    <div class="modal fade" id="deleteModal{{ order.id }}" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="deleteModalLabel">Delete Booking</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to delete this booking for "{{ order.name }}"?
+                                </div>
+                                <div class="modal-footer">
+                                    <form method="POST" action="/delete_booking/{{ order.id }}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-            {% endfor %}
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
-</body>
-</html>
 
+    <script>
+        // Search Functionality
+        document.getElementById('search').addEventListener('input', function() {
+            let searchValue = this.value.toLowerCase();
+            let rows = document.querySelectorAll('#bookingTable tr');
+
+            rows.forEach(row => {
+                let text = row.innerText.toLowerCase();
+                row.style.display = text.includes(searchValue) ? "" : "none";
+            });
+        });
+    </script>
+</body>

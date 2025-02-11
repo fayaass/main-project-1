@@ -20,6 +20,8 @@ urlpatterns=[
     path('edit_prod/<pid>',views.edit_prod),
     path('delete_prod/<pid>',views.delete_prod),
 
+    path('delete_booking/<int:order_id>', views.delete_booking, name='delete_booking'),
+   
 
     path('password_reset/', CustomPasswordResetView.as_view(), name='password_reset'),
     path('password_reset/done/', CustomPasswordResetDoneView.as_view(), name='password_reset_done'),
@@ -56,6 +58,8 @@ urlpatterns=[
     
     path('user_buy/<int:cid>/', views.user_buy, name='user_buy'),
     path('user_booking/', views.user_booking, name='user_booking'),
+
+    
 ]
 
 
