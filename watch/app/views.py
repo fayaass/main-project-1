@@ -202,6 +202,11 @@ class CustomPasswordResetCompleteView(PasswordResetCompleteView):
 
 #------------------------user--------------------------------
 
+def profile(req):
+    data = Product.objects.all()  # Get all products from the database
+    return render(req, 'profile.html', {'data': data, 'user': req.user})
+
+
 def register(req):
     if req.method=='POST':
         name=req.POST['name']
