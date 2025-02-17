@@ -27,7 +27,7 @@
         }
         .hero-section {
             position: relative;
-            height: 1000px;
+            height: 84vh; /* Adjusted for responsiveness */
             background: url('../../static/hero_image.jpg') no-repeat center center;
             background-size: cover;
             color: white;
@@ -38,12 +38,12 @@
             background-image: url(../static/new\ logo.jpg);
         }
         .hero-section h1 {
-            font-size: 3rem;
+            font-size: 2.5rem;
             font-weight: bold;
             text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
         }
         .hero-section p {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
         }
         .btn-primary {
@@ -116,6 +116,45 @@
         footer a:hover {
             text-decoration: underline;
         }
+
+        /* Responsive Media Queries */
+        @media (max-width: 768px) {
+            .hero-section h1 {
+                font-size: 2rem;
+            }
+            .hero-section p {
+                font-size: 1rem;
+            }
+            .product-card img {
+                height: 250px;
+            }
+            .section-title {
+                font-size: 2rem;
+            }
+            .btn-primary {
+                font-size: 1rem;
+                padding: 10px 25px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero-section {
+                height: 40vh;
+            }
+            .hero-section h1 {
+                font-size: 1.8rem;
+            }
+            .product-card img {
+                height: 200px;
+            }
+            .section-title {
+                font-size: 1.8rem;
+            }
+            .btn-primary {
+                font-size: 0.9rem;
+                padding: 8px 20px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -128,7 +167,6 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    
                     <li class="nav-item">
                         <a class="nav-link" href="shp_login1">Log In</a>
                     </li>
@@ -140,40 +178,8 @@
     <!-- Hero Section -->
     <div class="hero-section">
         <div><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-            <!-- <h1>Luxury Watches, Redefined</h1> -->
-            <!-- <p>Explore the timeless elegance of Hublot's collections.</p> -->
-            <!-- <a href="shp_login1" class="btn btn-primary">Shop Now</a> -->
         </div>
     </div>
-
-    <!-- Product Section -->
-    <!-- <div class="product-section" id="products">
-        <h2 class="section-title">Our Exclusive Products</h2>
-        <div class="container">
-            <div class="row">
-                {% for product in data %}
-                <div class="col-md-4 mb-4">
-                    <a href="view_pro/{{product.pk}}" style="text-decoration: none;">
-                        <div class="card product-card">
-                            <img class="card-img-top" src="{{product.img.url}}" alt="{{product.name}}">
-                            <div class="card-body">
-                                <h5 class="product-card-title">{{product.name}}</h5>
-                                <p class="card-text">{{product.dis}}</p>
-                                <s><p class="text-muted">₹{{product.price}}</p></s>
-                                <p class="product-card-price">₹{{product.ofr_price}}</p>
-                                {% if product.is_out_of_stock %}
-                                    <p class="stock-message out-of-stock">Out of Stock</p>
-                                {% else %}
-                                    <p class="stock-message in-stock">In Stock: {{ product.quantity }}</p>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-    </div> -->
 
     <!-- Footer -->
     <footer>

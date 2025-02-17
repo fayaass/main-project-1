@@ -134,9 +134,7 @@ def delete_prod(req,pid):
 
 
 
-# def booking(req):
-#     buy=Buy.objects.all()[::-1]
-#     return render(req,'shop/booking.html',{'buy':buy})
+
 
 def booking(request):
     # Get all Buy objects with related product and user data
@@ -247,61 +245,6 @@ def add_to_cart(req,pid):
 
 
 
-
-
-
-
-
-# def view_cart(req):
-#     user=User.objects.get(username=req.session['user'])
-#     cart_det=Cart.objects.filter(user=user)
-#     return render(req,'user/view_cart.html',{'cart_det':cart_det})
-
-# def delete_cart(req,id):
-#     cart=Cart.objects.get(pk=id)
-#     cart.delete()
-#     return redirect(view_cart) 
-
-# def user_buy(req,cid):
-#     user=User.objects.get(username=req.session['user'])
-#     cart=Cart.objects.get(pk=cid)
-#     product=cart.product
-#     price=cart.product.ofr_price
-#     buy=Buy.objects.create(user=user,product=product,price=price)
-#     buy.save()
-#     #cart.delete()
-#     return redirect(order)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# from django.shortcuts import redirect
-
-# def user_buy(req, cid):
-#     user = User.objects.get(username=req.session['user'])
-#     cart = Cart.objects.get(pk=cid)
-#     product = cart.product
-#     price = cart.product.ofr_price
-#     quantity = cart.quantity  # Get the quantity
-
-#     buy = Buy.objects.create(user=user, product=product, price=price, quantity=quantity)
-#     buy.save()
-
-#     cart.delete()  # Remove from cart after purchase
-
-#     return redirect(order)  # Use absolute URL to avoid incorrect paths
-
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import Product, User, Buy, Cart
@@ -330,19 +273,6 @@ def user_buy(req, cid):
 
 
 
-
-
-
-
-
-
-
-# def user_booking(req):
-#     user = User.objects.get(username=req.session['user'])
-#     bookings = Buy.objects.filter(user=user)
-#     return render(req, 'user/user_booking.html', {'buy': bookings})
-
-
 def user_booking(req):
     user = User.objects.get(username=req.session['user'])
     bookings = Buy.objects.filter(user=user)
@@ -354,51 +284,6 @@ def user_booking(req):
     return render(req, 'user/user_booking.html', {'buy': bookings})
 
 
-
-# def user_booking(req):
-#     user=User.objects.get(username=req.session['user'])
-#     buy=Buy.objects.filter(user=user)[::-1]
-#     return render(req,'user/user_booking.html',{'buy':buy})
-
-
-
-
-# def user_buy1(req,pid):
-#     user=User.objects.get(username=req.session['user'])
-#     product=Product.objects.get(pk=pid) 
-#     price=product.ofr_price
-#     buy=Buy.objects.create(user=user,product=product,price=price)
-#     buy.save()
-#     return redirect(order)
-
-
-
-
-# from django.contrib import messages
-# from django.shortcuts import redirect
-# from .models import Product, User, Buy
-
-# def user_buy1(req, pid):
-#     user = User.objects.get(username=req.session['user'])
-#     product = Product.objects.get(pk=pid)
-    
-#     # Check if the product is out of stock (quantity is zero)
-#     if product.quantity == 0:
-#         # If product is out of stock, show an alert message
-#         messages.error(req, 'Sorry, this product is currently out of stock and cannot be purchased.')
-#         return redirect('view_product', pid=pid)  # Redirect back to the product page with the alert
-    
-#     # Continue with the purchase process if the product is in stock
-#     price = product.ofr_price
-#     buy = Buy.objects.create(user=user, product=product, price=price)
-#     buy.save()
-    
-#     # Optionally, you can reduce the stock quantity here if needed
-#     product.quantity -= 1
-#     product.save()
-    
-#     # Redirect to an order confirmation or view
-#     return redirect('order')
 
 
 
@@ -433,12 +318,6 @@ def user_buy1(req, pid):
     
 
 
-# def user_booking(req):
-#     user=User.objects.get(username=req.session['user'])
-#     buy=Buy.objects.filter(user=user)[::-1]
-#     return render(req,'user/user_booking.html',{'buy':buy})
-
-
 
 
 
@@ -466,43 +345,6 @@ def order_success(request):
 
 
 
-
-
-
-
-# from django.shortcuts import render, redirect
-# from .models import Cart
-
-# def view_cart(request):
-#     cart_det = Cart.objects.filter(user=request.user)
-#     total_cart_price = sum(item.product.ofr_price * item.quantity for item in cart_det)
-
-#     return render(request, 'user/view_cart.html', {'cart_det': cart_det, 'total_cart_price': total_cart_price})
-
-# def delete_cart(request, id):
-#     Cart.objects.filter(pk=id, user=request.user).delete()
-#     return redirect(view_cart)
-
-
-
-
-
-# from django.shortcuts import render, redirect
-# from .models import Cart
-
-# def view_cart(request):
-#     cart_det = Cart.objects.filter(user=request.user)
-#     total_cart_price = sum(item.product.ofr_price * item.quantity for item in cart_det)
-
-#     # Check if the product stock is available for each item
-#     for item in cart_det:
-#         item.is_out_of_stock = item.product.quantity == 0
-
-#     return render(request, 'user/view_cart.html', {'cart_det': cart_det, 'total_cart_price': total_cart_price})
-
-# def delete_cart(request, id):
-#     Cart.objects.filter(pk=id, user=request.user).delete()
-#     return redirect(view_cart)
 
 
 from django.shortcuts import render, redirect
