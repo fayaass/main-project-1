@@ -138,3 +138,10 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'muhammedfayas815@gmail.com'  # Replace with your Gmail address
 EMAIL_HOST_PASSWORD = 'mpkoeoopzzvqejyo'  # Replace with your app password
 DEFAULT_FROM_EMAIL = 'Your App <your-email@example.com>'
+
+
+
+
+
+RAZORPAY_KEY_ID = "rzp_test_fGXBbOpWsXJ5K7"
+RAZORPAY_KEY_SECRET = "8r97uL39w4etyjunuKYO4tpE"

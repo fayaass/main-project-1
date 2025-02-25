@@ -326,16 +326,7 @@ from django.shortcuts import render, redirect
 from .form import OrderForm
 from .models import Order
 
-def order(request):
-    if request.method == 'POST':
-        form = OrderForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('order_success')  # Redirect to success page
-    else:
-        form = OrderForm()
-    
-    return render(request, 'user/product_booking.html', {'form': form})
+
 
 def order_success(request):
     return render(request, 'user/order.html')
@@ -401,22 +392,113 @@ def delete_cart(request, id):
 
 from django.shortcuts import redirect, get_object_or_404
 from django.contrib import messages
-from .models import Buy  # Import your Buy model
+from .models import Buy, Product  # Import the Product model for stock updates
 
 def cancel_buy(request, buy_id):
     buy = get_object_or_404(Buy, pk=buy_id)
+
+    # Get the product associated with the buy order
+    product = buy.product  # Assuming Buy model has a foreign key to Product
     
-    # Perform cancellation logic (e.g., delete or update status)
-    buy.delete()  # Or buy.status = "Cancelled" and buy.save()
-    
-    messages.success(request, "Your purchase has been canceled successfully.")
-    return redirect(user_booking)  # Redirect to the buy list page
+    # Restock the product by incrementing its stock
+    if product:
+        product.quantity += buy.quantity  # Assuming Buy model has a quantity field
+        product.save()
+
+    # Perform cancellation logic (delete or update status)
+    buy.delete()  # Or you can update the status: buy.status = "Cancelled" and buy.save()
+
+    # Show success message
+    messages.success(request, "Your purchase has been canceled successfully. The product stock has been updated.")
+
+    # Redirect to the user booking page (or any other page)
+    return redirect('user_booking')  # Ensure this URL is correct in your urls.py
 
 
 
 
 
 
+
+import razorpay
+from django.shortcuts import render, redirect
+from django.conf import settings
+from .form import OrderForm
+
+# Set up Razorpay client
+razorpay_client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+
+def order(request):
+    if request.method == 'POST':
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            order = form.save()  # Save the order details first
+            
+            # Create a Razorpay order
+            razorpay_order = razorpay_client.order.create({
+                'amount': 5000,  # Amount in paise (₹50.00), Razorpay expects the amount in paise
+                'currency': 'INR',
+                'payment_capture': 1,
+            })
+            
+            # Store Razorpay order ID in the database
+            order.razorpay_order_id = razorpay_order['id']
+            order.save()
+
+            # Send the order details to the template for the payment page
+            return render(request, 'user/payment.html', {
+                'razorpay_order_id': razorpay_order['id'],
+                'razorpay_amount': razorpay_order['amount'],
+                'razorpay_key': settings.RAZORPAY_KEY_ID,  # Provide the Razorpay key in the template
+            })
+    else:
+        form = OrderForm()
+
+    return render(request, 'user/product_booking.html', {'form': form})
+
+
+
+
+
+
+import razorpay
+from django.shortcuts import render, redirect
+from django.http import JsonResponse
+from django.conf import settings
+from .models import Order
+from .form import OrderForm
+
+# Initialize Razorpay client
+razorpay_client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+
+def verify_payment(request):
+    if request.method == 'POST':
+        razorpay_order_id = request.POST['razorpay_order_id']
+        razorpay_payment_id = request.POST['razorpay_payment_id']
+        razorpay_signature = request.POST['razorpay_signature']
+
+        # Verify the signature
+        params_dict = {
+            'razorpay_order_id': razorpay_order_id,
+            'razorpay_payment_id': razorpay_payment_id,
+            'razorpay_signature': razorpay_signature
+        }
+
+        try:
+            # Verify the payment signature
+            razorpay_client.utility.verify_payment_signature(params_dict)
+
+            # Payment is verified, update the order status in your database
+            order = Order.objects.get(razorpay_order_id=razorpay_order_id)
+            order.payment_status = 'Success'
+            order.save()
+
+            return render(request, 'user/order_success.html', {'order': order})
+
+        except razorpay.errors.SignatureVerificationError:
+            return render(request, 'user/order_failed.html')
+
+    return JsonResponse({'status': 'failed'}, status=400)
 
 
 

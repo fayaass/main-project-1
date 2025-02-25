@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Page</title>
+    <style>
+        /* General styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            width: 400px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .details {
+            margin-bottom: 20px;
+            color: #555;
+        }
+
+        .details p {
+            margin: 10px 0;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .footer {
+            font-size: 14px;
+            color: #888;
+            margin-top: 20px;
+        }
+
+        /* Responsive design */
+        @media (max-width: 500px) {
+            .container {
+                width: 90%;
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 20px;
+            }
+
+            button {
+                padding: 12px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Complete Your Payment</h1>
+        <div class="details">
+            <p>Amount: ₹{{ razorpay_amount | floatformat:2 }}</p>
+            <p>Description: Your Product Description</p>
+        </div>
+
+        <form action="/order/verify_payment/" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="razorpay_order_id" value="{{ razorpay_order_id }}">
+            <input type="hidden" name="razorpay_payment_id" id="razorpay_payment_id">
+            <input type="hidden" name="razorpay_signature" id="razorpay_signature">
+            
+            <button type="submit" id="pay-button">Pay Now</button>
+        </form>
+
+        <div class="footer">
+            <p>Secure Payment via Razorpay</p>
+        </div>
+    </div>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+        var options = {
+            "key": "{{ razorpay_key }}",  // The key you received from Razorpay
+            "amount": "{{ razorpay_amount }}",  // Amount in paise (₹50.00)
+            "currency": "INR",
+            "name": "Your Store Name",  // Your business name
+            "description": "Product Description",
+            "image": "URL_to_your_logo",  // Optional logo
+            "order_id": "{{ razorpay_order_id }}",  // Order ID created in the backend
+            "handler": function (response) {
+                // Send the payment details back to the backend for verification
+                document.getElementById("razorpay_payment_id").value = response.razorpay_payment_id;
+                document.getElementById("razorpay_signature").value = response.razorpay_signature;
+                document.getElementById("razorpay_order_id").value = response.razorpay_order_id;
+                document.forms[0].submit();  // Submit the form
+            },
+            "prefill": {
+                "name": "Your Name",
+                "email": "youremail@example.com",
+                "contact": "1234567890"
+            }
+        };
+
+        var rzp1 = new Razorpay(options);
+        document.getElementById('pay-button').onclick = function(e) {
+            rzp1.open();
+            e.preventDefault();
+        }
+    </script>
+
+</body>
+</html>
