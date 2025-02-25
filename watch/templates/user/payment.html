@@ -84,8 +84,12 @@
     <div class="container">
         <h1>Complete Your Payment</h1>
         <div class="details">
-            <p>Amount: ₹{{ razorpay_amount | floatformat:2 }}</p>
-            <p>Description: Your Product Description</p>
+            <!-- Displaying dynamic booking details -->
+            <p><strong>Amount:</strong> ₹{{ razorpay_amount | floatformat:2 }}</p>
+            <p><strong>Description:</strong> {{ product_description }}</p>  <!-- Product description -->
+            <p><strong>Customer Name:</strong> {{ customer_name }}</p> <!-- Customer Name -->
+            <p><strong>Email:</strong> {{ customer_email }}</p> <!-- Customer Email -->
+            <p><strong>Contact:</strong> {{ customer_contact }}</p> <!-- Customer Contact -->
         </div>
 
         <form action="/order/verify_payment/" method="POST">
@@ -108,8 +112,8 @@
             "key": "{{ razorpay_key }}",  // The key you received from Razorpay
             "amount": "{{ razorpay_amount }}",  // Amount in paise (₹50.00)
             "currency": "INR",
-            "name": "Your Store Name",  // Your business name
-            "description": "Product Description",
+            "name": "HUBLOT",  // Your business name
+            "description": "{{ product_description }}",  // Dynamic product description
             "image": "URL_to_your_logo",  // Optional logo
             "order_id": "{{ razorpay_order_id }}",  // Order ID created in the backend
             "handler": function (response) {
@@ -120,9 +124,9 @@
                 document.forms[0].submit();  // Submit the form
             },
             "prefill": {
-                "name": "Your Name",
-                "email": "youremail@example.com",
-                "contact": "1234567890"
+                "name": "{{ customer_name }}",  // Prefilled customer name
+                "email": "{{ customer_email }}",  // Prefilled email
+                "contact": "{{ customer_contact }}"  // Prefilled contact number
             }
         };
 
