@@ -185,7 +185,7 @@
                         <a class="nav-link" href="booking">Booking</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="shp_logout">Log out</a>
+                        <a class="nav-link" href="shp_logout"onclick="return confirmLogout()">Log out</a>
                     </li>    
                 </ul>
             </div>
@@ -226,6 +226,12 @@
             {% endfor %}
         </div>
     </div>
+    <script>
+        // Confirm Logout Function
+        function confirmLogout() {
+            return confirm("Are you sure you want to logout?");
+        }
+    </script>
 
 </body>
 </html>

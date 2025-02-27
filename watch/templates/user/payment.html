@@ -5,137 +5,157 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Payment Page</title>
     <style>
-        /* General styles */
-        body {
-            font-family: Arial, sans-serif;
+        * {
             margin: 0;
             padding: 0;
-            background-color: #f4f4f9;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            box-sizing: border-box;
         }
 
-        .container {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 40px;
-            width: 400px;
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        header {
+            background-color: #007BFF;
+            color: white;
+            padding: 20px;
             text-align: center;
         }
 
-        h1 {
-            color: #333;
-            font-size: 24px;
+        header h1 {
+            font-size: 2rem;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 1.5rem;
             margin-bottom: 20px;
         }
 
-        .details {
-            margin-bottom: 20px;
-            color: #555;
+        .order-details {
+            margin-bottom: 30px;
         }
 
-        .details p {
-            margin: 10px 0;
+        .order-details p {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
         }
 
-        button {
+        .payment-btn-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        /* New Pay Now Button Style */
+        .payment-btn-container button {
             background-color: #4CAF50;
             color: white;
+            padding: 16px 32px;
+            font-size: 1.2rem;
             border: none;
-            padding: 15px 25px;
-            font-size: 16px;
-            border-radius: 5px;
+            border-radius: 50px; /* Rounded corners */
             cursor: pointer;
             width: 100%;
+            max-width: 350px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
-        button:hover {
+        .payment-btn-container button:hover {
             background-color: #45a049;
+            transform: translateY(-5px); /* Lift effect */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
         }
 
-        .footer {
-            font-size: 14px;
-            color: #888;
+        .payment-btn-container button:active {
+            background-color: #388e3c;
+            transform: translateY(2px); /* Pressed effect */
+            box-shadow: none;
+        }
+
+        .home-btn-container {
+            text-align: center;
             margin-top: 20px;
         }
 
-        /* Responsive design */
-        @media (max-width: 500px) {
-            .container {
-                width: 90%;
-                padding: 20px;
-            }
+        .home-btn-container a {
+            color: #007BFF;
+            font-size: 1.1rem;
+            text-decoration: none;
+        }
 
-            h1 {
-                font-size: 20px;
-            }
+        .home-btn-container a:hover {
+            text-decoration: underline;
+        }
 
-            button {
-                padding: 12px 20px;
-            }
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 0.9rem;
+            color: #777;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>Complete Your Payment</h1>
-        <div class="details">
-            <!-- Displaying dynamic booking details -->
-            <p><strong>Amount:</strong> ₹{{ razorpay_amount | floatformat:2 }}</p>
-            <p><strong>Description:</strong> {{ product_description }}</p>  <!-- Product description -->
-            <p><strong>Customer Name:</strong> {{ customer_name }}</p> <!-- Customer Name -->
-            <p><strong>Email:</strong> {{ customer_email }}</p> <!-- Customer Email -->
-            <p><strong>Contact:</strong> {{ customer_contact }}</p> <!-- Customer Contact -->
-        </div>
+<header>
+    <h1>Payment Page</h1>
+</header>
 
-        <form action="/order/verify_payment/" method="POST">
-            {% csrf_token %}
-            <input type="hidden" name="razorpay_order_id" value="{{ razorpay_order_id }}">
-            <input type="hidden" name="razorpay_payment_id" id="razorpay_payment_id">
-            <input type="hidden" name="razorpay_signature" id="razorpay_signature">
-            
-            <button type="submit" id="pay-button">Pay Now</button>
+<div class="container">
+    <h2>Order Summary</h2>
+
+    <!-- Order Details -->
+    {% if order %}
+        <div class="order-details">
+            <p><strong>Order ID:</strong> {{ order.id }}</p>
+            <p><strong>Total Amount:</strong> ₹{{ order.ofr_price }}</p>
+        </div>
+    {% else %}
+        <p>No order details available.</p>
+    {% endif %}
+
+    <!-- Razorpay Payment Form -->
+    <div class="payment-btn-container">
+        <form action="/payment-success/" method="POST" id="payment-form">
+            <script
+                src="https://checkout.razorpay.com/v1/checkout.js"
+                data-key="{{ razorpay_key_id }}"
+                data-amount="{{ razorpay_amount }}"
+                data-currency="{{ razorpay_currency }}"
+                data-order_id="{{ razorpay_order_id }}"
+                data-buttontext="Pay Now"
+                data-name="Hublot"
+                data-description="Order Payment"
+                data-image="https://yourlogo.com/logo.png"
+                data-prefill.name="{{ user.first_name }}"
+                data-prefill.email="{{ user.email }}"
+                data-theme.color="#007BFF">
+            </script>
         </form>
-
-        <div class="footer">
-            <p>Secure Payment via Razorpay</p>
-        </div>
     </div>
 
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-    <script>
-        var options = {
-            "key": "{{ razorpay_key }}",  // The key you received from Razorpay
-            "amount": "{{ razorpay_amount }}",  // Amount in paise (₹50.00)
-            "currency": "INR",
-            "name": "HUBLOT",  // Your business name
-            "description": "{{ product_description }}",  // Dynamic product description
-            "image": "URL_to_your_logo",  // Optional logo
-            "order_id": "{{ razorpay_order_id }}",  // Order ID created in the backend
-            "handler": function (response) {
-                // Send the payment details back to the backend for verification
-                document.getElementById("razorpay_payment_id").value = response.razorpay_payment_id;
-                document.getElementById("razorpay_signature").value = response.razorpay_signature;
-                document.getElementById("razorpay_order_id").value = response.razorpay_order_id;
-                document.forms[0].submit();  // Submit the form
-            },
-            "prefill": {
-                "name": "{{ customer_name }}",  // Prefilled customer name
-                "email": "{{ customer_email }}",  // Prefilled email
-                "contact": "{{ customer_contact }}"  // Prefilled contact number
-            }
-        };
+    <!-- Home Button -->
+    <div class="home-btn-container">
+        <a href="{% url 'user_home' %}">Go to Home</a>
+    </div>
+</div>
 
-        var rzp1 = new Razorpay(options);
-        document.getElementById('pay-button').onclick = function(e) {
-            rzp1.open();
-            e.preventDefault();
-        }
-    </script>
+<footer>
+    <p>&copy; 2025 Hublot. All rights reserved.</p>
+</footer>
 
 </body>
 </html>

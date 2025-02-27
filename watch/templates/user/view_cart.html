@@ -209,7 +209,7 @@
                     <li class="nav-item"><a class="nav-link" href="/user_home">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="/view_cart">Cart</a></li>
                     <li class="nav-item"><a class="nav-link" href="/user_booking">Booking</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/shp_logout">Log out</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/shp_logout"onclick="return confirmLogout()">Log out</a></li>
                 </ul>
             </div>
         </div>
@@ -283,6 +283,13 @@
             document.getElementById('total-cart-price').innerText = totalCartPrice.toFixed(2);
         }
     </script><br><br><br><br><br><br><br><br><br><br>
+     <script>
+        // Confirm Logout Function
+        function confirmLogout() {
+            return confirm("Are you sure you want to logout?");
+        }
+    </script>
+
 
     <!-- Footer -->
     <footer>
