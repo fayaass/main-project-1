@@ -243,7 +243,7 @@ def verify_otp_reg(req):
             user.is_verified = True
             user.save()      
             messages.success(req, "Registration successful! You can now log in.")
-            send_mail('User Registration Succesfull', 'Account Created Succesfully And Welcome To Bookmart', settings.EMAIL_HOST_USER, [email])
+            send_mail('User Registration Succesfull', 'Account Created Succesfully And Welcome To Hublot', settings.EMAIL_HOST_USER, [email])
             return redirect('shp_login1')
         else:
             messages.warning(req, "Invalid OTP. Try again.")
