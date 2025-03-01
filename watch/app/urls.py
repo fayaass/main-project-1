@@ -32,7 +32,9 @@ urlpatterns=[
 
     # --------------user---------------------
 
-    path('register/', views.register, name='register'),
+    path('register/',views.register , name='register'),
+    path('verifyotp/',views.verify_otp_reg, name='verify_otp_reg'),
+    
     # path('register',views.register),
     # path('user_home',views.user_home),
      path('user_home',views.user_home ,name='user_home'),
